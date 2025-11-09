@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রিয়েল এস্টেট সিনেমাটিক - শিশুর রক্ষা</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .scene-container {
+            padding: 40px;
+            position: relative;
+        }
+
+        .scene {
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 50%, #90EE90 100%);
+            border-radius: 15px;
+            padding: 40px;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .balcony {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to bottom, #D2691E 0%, #8B4513 100%);
+            border-top: 10px solid #654321;
+        }
+
+        .balcony::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: repeating-linear-gradient(
+                90deg,
+                #654321 0px,
+                #654321 30px,
+                transparent 30px,
+                transparent 40px
+            );
+        }
+
+        .baby {
+            position: absolute;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .baby.scared {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .baby-head {
+            width: 60px;
+            height: 60px;
+            background: #FFD1A4;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .baby-eyes {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 15px;
+        }
+
+        .eye {
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+        }
+
+        .baby-mouth {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 8px;
+            border: 2px solid #000;
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .baby-body {
+            width: 70px;
+            height: 50px;
+            background: #FF69B4;
+            border-radius: 15px;
+            margin: 5px auto 0;
+        }
+
+        .toys {
+            position: absolute;
+            bottom: 25%;
+            left: 30%;
+            display: flex;
+            gap: 20px;
+        }
+
+        .toy {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        .toy-1 { background: #FF6B6B; }
+        .toy-2 { background: #4ECDC4; }
+        .toy-3 { background: #FFE66D; }
+
+        .snake {
+            position: absolute;
+            bottom: 20%;
+            right: 70%;
+            width: 0;
+            z-index: 9;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .snake.active {
+            width: 150px;
+            opacity: 1;
+            right: 45%;
+        }
+
+        .snake-body {
+            width: 150px;
+            height: 20px;
+            background: linear-gradient(to right, #2F4F2F, #556B2F);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .snake-head {
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            width: 30px;
+            height: 30px;
+            background: #2F4F2F;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+        }
+
+        .snake-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 15px,
+                rgba(0, 0, 0, 0.2) 15px,
+                rgba(0, 0, 0, 0.2) 20px
+            );
+            border-radius: 10px;
+        }
+
+        .cat {
+            position: absolute;
+            bottom: 22%;
+            right: 60%;
+            width: 0;
+            opacity: 0;
+            z-index: 11;
+            transition: all 0.5s ease;
+        }
+
+        .cat.active {
+            width: 80px;
+            opacity: 1;
+            right: 48%;
+        }
+
+        .cat-body {
+            width: 60px;
+            height: 45px;
+            background: #F4A460;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .cat-head {
+            position: absolute;
+            top: -25px;
+            left: 35px;
+            width: 40px;
+            height: 35px;
+            background: #F4A460;
+            border-radius: 15px;
+        }
+
+        .cat-ear {
+            position: absolute;
+            top: -5px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 15px solid #F4A460;
+        }
+
+        .cat-ear-left { left: 5px; }
+        .cat-ear-right { right: 5px; }
+
+        .cat-tail {
+            position: absolute;
+            bottom: 10px;
+            left: -20px;
+            width: 25px;
+            height: 8px;
+            background: #F4A460;
+            border-radius: 10px;
+            transform: rotate(-30deg);
+        }
+
+        .mother {
+            position: absolute;
+            bottom: 20%;
+            left: -200px;
+            width: 120px;
+            z-index: 12;
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .mother.active {
+            left: 40%;
+            opacity: 1;
+        }
+
+        .mother-body {
+            width: 100px;
+            height: 120px;
+            background: #9B59B6;
+            border-radius: 20px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .mother-head {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            background: #FFD1A4;
+            border-radius: 50%;
+        }
+
+        .mother-hair {
+            position: absolute;
+            top: -10px;
+            left: -5px;
+            width: 80px;
+            height: 50px;
+            background: #2C3E50;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .mother-arms {
+            position: absolute;
+            top: 30px;
+            width: 100%;
+        }
+
+        .arm {
+            position: absolute;
+            width: 30px;
+            height: 70px;
+            background: #9B59B6;
+            border-radius: 15px;
+        }
+
+        .arm-left {
+            left: -25px;
+            transform: rotate(-30deg);
+        }
+
+        .arm-right {
+            right: -25px;
+            transform: rotate(30deg);
+        }
+
+        .controls {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 0 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .narrative {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .narrative p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .clouds {
+            position: absolute;
+            top: 50px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .cloud {
+            position: absolute;
+            width: 100px;
+            height: 40px;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+            animation: float 20s infinite linear;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 20px;
+        }
+
+        .cloud::after {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            right: 20px;
+        }
+
+        .cloud-1 { left: 10%; animation-delay: 0s; }
+        .cloud-2 { left: 50%; animation-delay: 5s; }
+        .cloud-3 { left: 80%; animation-delay: 10s; }
+
+        @keyframes float {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100vw); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            25% { transform: translateX(-50%) rotate(-5deg); }
+            75% { transform: translateX(-50%) rotate(5deg); }
+        }
+
+        .sun {
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #FFD700, #FFA500);
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .scene-container {
+                padding: 20px;
+            }
+
+            .scene {
+                padding: 20px;
+                min-height: 400px;
+            }
+
+            .btn {
+                padding: 12px 30px;
+                font-size: 1em;
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>রিয়েল এস্টেট সিনেমাটিক</h1>
+            <p>একটি শিশুর নাটকীয় রক্ষা</p>
+        </div>
+
+        <div class="scene-container">
+            <div class="scene" id="scene">
+                <div class="sun"></div>
+
+                <div class="clouds">
+                    <div class="cloud cloud-1"></div>
+                    <div class="cloud cloud-2"></div>
+                    <div class="cloud cloud-3"></div>
+                </div>
+
+                <div class="balcony"></div>
+
+                <div class="baby" id="baby">
+                    <div class="baby-head">
+                        <div class="baby-eyes">
+                            <div class="eye"></div>
+                            <div class="eye"></div>
+                        </div>
+                        <div class="baby-mouth"></div>
+                    </div>
+                    <div class="baby-body"></div>
+                </div>
+
+                <div class="toys">
+                    <div class="toy toy-1"></div>
+                    <div class="toy toy-2"></div>
+                    <div class="toy toy-3"></div>
+                </div>
+
+                <div class="snake" id="snake">
+                    <div class="snake-body">
+                        <div class="snake-pattern"></div>
+                        <div class="snake-head"></div>
+                    </div>
+                </div>
+
+                <div class="cat" id="cat">
+                    <div class="cat-body">
+                        <div class="cat-head">
+                            <div class="cat-ear cat-ear-left"></div>
+                            <div class="cat-ear cat-ear-right"></div>
+                        </div>
+                        <div class="cat-tail"></div>
+                    </div>
+                </div>
+
+                <div class="mother" id="mother">
+                    <div class="mother-body">
+                        <div class="mother-head">
+                            <div class="mother-hair"></div>
+                        </div>
+                        <div class="mother-arms">
+                            <div class="arm arm-left"></div>
+                            <div class="arm arm-right"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn" id="playBtn" onclick="playAnimation()">গল্প শুরু করুন</button>
+                <button class="btn" id="resetBtn" onclick="resetAnimation()" disabled>আবার দেখুন</button>
+            </div>
+
+            <div class="narrative">
+                <p id="narrativeText">একটি দুই বছরের শিশু বারান্দায় শান্তিপূর্ণভাবে খেলাধুলা করছে...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let animationRunning = false;
+
+        async function playAnimation() {
+            if (animationRunning) return;
+
+            animationRunning = true;
+            document.getElementById('playBtn').disabled = true;
+            document.getElementById('resetBtn').disabled = true;
+
+            const narrativeText = document.getElementById('narrativeText');
+            const baby = document.getElementById('baby');
+            const snake = document.getElementById('snake');
+            const cat = document.getElementById('cat');
+            const mother = document.getElementById('mother');
+
+            // Scene 1: Baby playing
+            narrativeText.textContent = 'একটি দুই বছরের শিশু বারান্দায় শান্তিপূর্ণভাবে খেলাধুলা করছে...';
+            await sleep(2000);
+
+            // Scene 2: Snake appears
+            narrativeText.textContent = 'হঠাৎ করে একটি বিষাক্ত সাপ বারান্দায় চলে আসল!';
+            snake.classList.add('active');
+            await sleep(2000);
+
+            // Scene 3: Snake approaches baby
+            narrativeText.textContent = 'সাপটি শিশুটির দিকে এগিয়ে আসছে... বিপদ আসন্ন!';
+            baby.classList.add('scared');
+            await sleep(2000);
+
+            // Scene 4: Cat arrives
+            narrativeText.textContent = 'তখনই একটি বিড়াল দ্রুত এসে সাপটিকে আক্রমণ করল!';
+            cat.classList.add('active');
+            await sleep(1500);
+
+            // Scene 5: Snake leaves
+            narrativeText.textContent = 'বিড়ালের আক্রমণে সাপটি পালিয়ে গেল...';
+            snake.style.right = '100%';
+            snake.style.opacity = '0';
+            await sleep(2000);
+
+            // Scene 6: Mother arrives
+            narrativeText.textContent = 'ভিতর থেকে মা দৌড়ে এসে শিশুটিকে কোলে তুলে নিলেন!';
+            mother.classList.add('active');
+            await sleep(2000);
+
+            // Scene 7: Happy ending
+            narrativeText.textContent = 'শিশুটি নিরাপদ! মা তাকে শক্ত করে জড়িয়ে ধরলেন। বিড়ালটি শিশুর জীবন রক্ষা করেছে!';
+            baby.classList.remove('scared');
+
+            animationRunning = false;
+            document.getElementById('resetBtn').disabled = false;
+        }
+
+        function resetAnimation() {
+            const narrativeText = document.getElementById('narrativeText');
+            const baby = document.getElementById('baby');
+            const snake = document.getElementById('snake');
+            const cat = document.getElementById('cat');
+            const mother = document.getElementById('mother');
+
+            // Reset all elements
+            snake.classList.remove('active');
+            snake.style.right = '70%';
+            snake.style.opacity = '0';
+
+            cat.classList.remove('active');
+            cat.style.right = '60%';
+            cat.style.opacity = '0';
+
+            mother.classList.remove('active');
+
+            baby.classList.remove('scared');
+
+            narrativeText.textContent = 'একটি দুই বছরের শিশু বারান্দায় শান্তিপূর্ণভাবে খেলাধুলা করছে...';
+
+            document.getElementById('playBtn').disabled = false;
+            document.getElementById('resetBtn').disabled = true;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+</html>
